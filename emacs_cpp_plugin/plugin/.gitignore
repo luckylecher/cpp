@@ -1,0 +1,7 @@
+*.dat
+*.swp
+auto-save-list/
+eshell/
+ido.last
+places
+

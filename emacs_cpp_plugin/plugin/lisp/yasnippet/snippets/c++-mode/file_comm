@@ -1,0 +1,19 @@
+# -*- mode: snippet -*-
+# name: file_comment
+# key: file_comm
+# --
+// =============================================================================
+// 
+//       Filename:  `(file-name-nondirectory (buffer-file-name))`
+// 
+//    Description:  ${1:}
+// 
+//        Version:  1.0
+//        Created:  `(format-time-string "%m/%d/%y %I:%M:%S %p")`
+//       Revision:  none
+//       Compiler:  g++
+// 
+//         Author:  JerryZhang(me@zhangjiee.com)
+//        License:  Copyright © 2014  All Rights Reserved.
+// 
+// =============================================================================
