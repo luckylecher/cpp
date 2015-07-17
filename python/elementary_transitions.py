@@ -1,17 +1,41 @@
+class Next:
+    def __init__(self):
+        self.plist = []
+        self.character = ""
+        self.input = []
+        
+    def append(self, p):
+        self.plist.append(p)
+        self.character += p.getCharacter()
+
+    def addInput(self,ch):
+        self.input.append(ch)
+
+    def getCharacter(self):
+        return self.character
+
+    def sayHello(self):
+        print "------------"
+        for item in self.plist:
+            print "%s # %s" % (item.i, item.e)
+        print self.input
+
 class Position:
     def __init__(self,i,e):
         self.i = i
         self.e = e
+        self.str = str(i)+str(e);
         
-    def setWordLen(self,w):
-        self.w = w
-
     def toString(self):
         print "%d # %d" % (self.i,self.e)
 
     def reset(self,i,e):
         self.i = i
         self.e = e
+        self.str = str(i)+str(e);
+
+    def getCharacter(self):
+        return self.str
         
 class Caculate:
     def __init__(self):
@@ -20,6 +44,7 @@ class Caculate:
         self.x = ''
         self.position = Position(0,0)
         self.n = 2
+        self.nexts = []
 
     def setN(self,n):
         self.n = n
@@ -38,22 +63,25 @@ class Caculate:
     def caculateVector(self):
         self.v=[]
         counter = 0
+        k = min(self.n - self.position.e + 1, self.w - self.position.i)
         for char in self.word:
             counter += 1
             if counter <= self.position.i:
                 continue
+            if counter > k:
+                break
             if char == self.x:
                 self.v.append(1)
             else:
                 self.v.append(0)
-        print self.v
+            
 
     def printVector(self):
         print self.v
 
     def nextPosition(self):
         self.caculateVector()
-        self.next = []
+        self.next = Next()
         if self.position.e <= self.n - 1:
             if self.position.i <= self.w - 2:
                 self._fun_1()
@@ -66,14 +94,24 @@ class Caculate:
                 self._fun_4()
             elif self.position.i == self.w:
                 self._fun_5()
-        self.showNext()
+        for item in self.nexts:
+            if item.getCharacter() == self.next.getCharacter():
+                item.addInput(self.x)
+                return
+        self.next.addInput(self.x)
+        self.nexts.append(self.next)
 
+    def showNexts(self):
+        for item in self.nexts:
+            item.sayHello()
+        
     def _find_first_one(self):
         i = 1
         for item in self.v:
             if item == 1:
                 return i
             i += 1
+        return i
             
 
     def _fun_1(self):
@@ -87,8 +125,7 @@ class Caculate:
             # replace x with a correct char
             self.next.append(Position(self.position.i + 1, self.position.e + 1))
             # fill correct char until meet x, take j-1 operates
-            self.next.append(Position(self.position.i + first_1,
-                                      self.position.e + first_1 -1))
+            self.next.append(Position(self.position.i + first_1,self.position.e + first_1 -1))
         else:
             # just delete x
             self.next.append(Position(self.position.i, self.position.e + 1))
@@ -131,9 +168,20 @@ class Caculate:
             else:
                 item.toString()
 
-clt = Caculate()
-clt.test("cbabcdcc","c")
-clt.setN(5)
-clt.position.reset(2,0)
-clt.nextPosition()
+    def getNext(self):
+        return self.next
 
+    def is_final_state(self,p):
+        return self.n - p.e >= self.w - self.i
+
+def isEqual(p1, p2):
+    return p1.e == p2.e and p1.i == p2.i
+
+clt = Caculate()
+alph = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+clt.setN(1)
+clt.position.reset(1,0)
+for item in alph:
+    clt.test("atlas",item)
+    clt.nextPosition()
+clt.showNexts()

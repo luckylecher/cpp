@@ -1,13 +1,9 @@
 #include<iostream>
-#include<vector>
 #include<string>
 using namespace std;
 class Solution{
-private:
-    vector<string> rawData;
 public:
     void read_data();
-    void print_data();
     int deal_string(string &str);
     int deal_huiwen(string &str,int center);
 };
@@ -18,11 +14,6 @@ void Solution::read_data(){
         string tempStr;
         cin >> tempStr;
         cout << deal_string(tempStr) << endl;
-    }
-}
-void Solution::print_data(){
-    for(int i = 0; i < rawData.size(); i++){
-        cout << rawData[i] << endl;
     }
 }
 int Solution::deal_string(string &str){
@@ -53,6 +44,4 @@ int Solution::deal_huiwen(string &str,int center){
 int main(){
     Solution solution;
     solution.read_data();
-    solution.print_data();
-    
 }
