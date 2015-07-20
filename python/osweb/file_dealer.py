@@ -43,7 +43,6 @@ class MakeJsonFile:
         self.fpath = path
         
     def generateItem(self, id, title, content, link):
-        #{"fields":{...},"cmd":"ADD"}
         return '{"fields":{"id":"%s","title":"%s","content":"%s","link":"%s"},"cmd":"ADD"},' % (id, title, content
                                                                                                 .replace("\\","\\\\")
                                                                                                 .replace("\"","\\\"")
