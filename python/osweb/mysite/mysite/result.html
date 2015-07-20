@@ -13,21 +13,39 @@
     </head>
     <body>
         <div class="container">
-    <h3>[{{ keyword }}]的搜索结果</h3>
-    <a href="../index">返回</a>
-    </div>
-    <div class="container">
-        <div class="row">
-    <div class="col-md-9">
-    {% autoescape off %}
-    {% for item in all_result %}
-    <hr/>
-    <a href="{{ item.link }}">{{ item.title }}</a>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;{{ item.content }}</p>
-    {% endfor %}
-    {% endautoescape %}
-    </div>
-    </div>
-    </div>
+            <h3>[{{ keyword }}]的搜索结果</h3>
+            <span>共有 {{total}} 条结果，耗时{{searchtime}}秒。</span>
+            <a href="../index">返回</a>
+          
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    {% autoescape off %}
+                    {% for item in all_result %}
+                    <hr/>
+                    <a href="{{ item.link }}" target="_blank">{{ item.title }}</a>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;{{ item.content }}</p>
+                    {% endfor %}
+                    {% endautoescape %}
+                    <br/>
+                    <ul class="pagination">
+                        {% if prePage > 0  %}
+                        <li><a href="../result/?keywords={{ keyword }}&page={{prePage}}">&laquo;</a></li>
+                        {% else %}
+                        <li class="disabled"><a>&laquo;</a></li>
+                        {% endif %}
+                        <li class="active"><a>{{page}}</a></li>
+                        {% if nextPage > 0  %}
+                        <li><a href="../result/?keywords={{ keyword }}&page={{nextPage}}">&raquo;</a></li>
+                        {% else %}
+                        <li  class="disabled"><a>&raquo;</a></li>
+                        {% endif %}
+                        
+                </div>
+            </div>
+
+        </div>
+        
 </body>
 </html>

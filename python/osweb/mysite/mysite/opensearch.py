@@ -33,12 +33,11 @@ class OpenSearch:
             "index_name":self.appName
             }
         self.order = sorted(self.param.iteritems(), key=lambda d:d[0])
-        print self.order
 
-    def generateQueryParam(self,keyword):
+    def generateQueryParam(self,keyword, start, hit):
         self.param['SignatureNonce'] = self.getSignatureNonce()
         self.param['Timestamp'] = self.getUTC()
-        self.param['query'] = "query=content:'"+keyword+"'"
+        self.param['query'] = "query=content:'"+keyword+"'&&config=start:"+str(start)+",hit:"+str(hit)
 
     def encode(self, str):
         return quote(str).replace("%7E", "~")
@@ -72,18 +71,18 @@ class OpenSearch:
         conn.close()
         return result
 
-    def getSearchResult(self, key):
+    def getSearchResult(self, key, start, hit):
         #key = urllib.unquote(str(key)).decode('utf8')
-        self.generateQueryParam(key)
+        self.generateQueryParam(key, start, hit)
         url =  self.generateURL()
         response = urllib2.urlopen(url)
         html = response.read()
         res_obj = json.loads(html)
         if res_obj['status'] != "OK":
             print "search result not ok!"
-            return
+            return None
         else:
-            return res_obj['result']['items']
+            return res_obj['result']
     
     def test(self):
         self.generateQueryParam("Hello")
