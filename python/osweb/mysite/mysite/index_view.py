@@ -14,7 +14,7 @@ def search(request):
         os = OpenSearch()
         kw = request.GET.get('keywords').encode('utf-8')
         if kw == "":
-                return HttpResponse("empty keywords!")
+                return HttpResponse("关键字不能为空!<a href=\"../index\">返回</a>")
         page = request.GET.get('page')
         if page is None:
                 page = 1
@@ -46,3 +46,5 @@ def search(request):
                 "prePage":prePage
                 })
         return HttpResponse(t.render(c))
+def my_custom_error_view(request):
+        return HttpResponse("<H1>错误!</H1>")

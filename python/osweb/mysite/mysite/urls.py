@@ -18,3 +18,4 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
 )
+handler500 = 'mysite.index_view.my_custom_error_view'
