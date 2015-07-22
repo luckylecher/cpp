@@ -23,7 +23,7 @@ def search(request):
                 page = 1
         start = (page - 1) * hit
         f = open("log.txt","a")
-        f.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")+":"+kw+"\n")
+        f.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")+":"+kw+"(page:"+str(page)+")\n")
         f.close()
         res = os.getSearchResult(kw, start, hit)
         if res is None:

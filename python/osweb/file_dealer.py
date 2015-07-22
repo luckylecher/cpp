@@ -51,5 +51,6 @@ class MakeJsonFile:
 
 if __name__ == "__main__":
     mjf = MakeJsonFile()
-    mjf.setPath("temp.txt")
+    fname = raw_input("file_name:")
+    mjf.setPath(fname)
     mjf.deal()
