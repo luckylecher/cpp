@@ -2,8 +2,8 @@
 from django.http import HttpResponse
 from django import template
 from opensearch import OpenSearch
-import datetime
 import urllib
+import helper
 
 def hello(request):
         f = open("mysite/index.html")
@@ -15,16 +15,9 @@ def search(request):
         kw = request.GET.get('keywords').encode('utf-8')
         if kw == "":
                 return HttpResponse("关键字不能为空!<a href=\"../index\">返回</a>")
-        page = request.GET.get('page')
-        if page is None:
-                page = 1
-        page = int(page)
-        if page < 1:
-                page = 1
+        page = helper.get_page( request.GET.get('page') )
         start = (page - 1) * hit
-        f = open("log.txt","a")
-        f.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")+":"+kw+"(page:"+str(page)+")\n")
-        f.close()
+        helper.save_search_log(kw, page)
         res = os.getSearchResult(kw, start, hit)
         if res is None:
                 return HttpResponse("内部错误,请联系 砺诚")
@@ -35,6 +28,8 @@ def search(request):
         prePage = page -1
         f = open("mysite/result.html")
         t = template.Template(f.read())
+        for item in res['items']:
+                item['id'] = int(item['id'])
         c = template.Context({
                 "keyword":kw,
                 "all_result":res['items'],
