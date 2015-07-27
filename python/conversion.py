@@ -1,12 +1,5 @@
 #encoding:utf-8
 import re,json
-class Token:
-    term = None
-    type = 0 #0--fuzzy, 1--precision
-    def __init__(self, a, b):
-        self.term = a
-        self.type = b
-
 class FilterTerm:
     CONJUNCTION = 0 #ANDOR
     LQUOTE = 1
@@ -41,21 +34,25 @@ class Doit:
                 print "bad url clause: [%s]" % str
 
         if(query_clause.lstrip().rstrip() == "''" or query_clause.lstrip().rstrip() == ''):
-            print json.dumps({"match_all":{}})#查询所有结果
+            #print json.dumps({"match_all":{}})#查询所有结果
             query_obj = {"match_all":{}}
         else:
             query_obj = self.generate_es_query(0, self.get_query_clause_item( query_clause ))
-            print json.dumps(query_obj)
+            #print json.dumps(query_obj)
 
         search_str = ""
         if filter_clause is not None:
             filter_obj,k = self.generate_es_filter_obj(0, self.get_filter_clause_terms( filter_clause ))
-            print filter_obj
+            #print filter_obj
             search_str = '"query": {"filtered": {    "query":'+ json.dumps(query_obj) +',    "filter": '+json.dumps(filter_obj)+'}}'
         elif filter_clause is None:
             search_str = '"query":'+json.dumps(query_obj)
 
-        search_str = '{' + search_str + '}'
+        if sort_clause is not None:
+            sort_str = self.sort_json(sort_clause)
+            search_str='{'+sort_str+','+search_str+'}'
+        else:
+            search_str = '{' + search_str + '}'
         print search_str
 
     def append(self, str):
@@ -82,7 +79,7 @@ class Doit:
                 print "wrong"
         if str != "":
             self.strs.append(str)
-        print self.strs
+        #print self.strs
         return self.strs
 
     #判断index的类型是否是string
@@ -97,7 +94,6 @@ class Doit:
         return {"query_string":{"query":os_segment.replace("'","").replace('"',"\\\"")}}
 
     def generate_es_query(self, start, qterm):
-        print start
         statu = 0
         must = []
         should = []
@@ -262,7 +258,7 @@ class Doit:
                 print "get filter clause terms wrong"
             i += 1
         self.append(term)
-        print self.strs
+        #print self.strs
         return self.strs
 
     def generate_es_filter_obj(self, start, fterms):
@@ -367,14 +363,32 @@ class Doit:
             start += 1
         print "pattern validate failed"
         return "error", -1
+    def sort_json(self, sortstr):
+        para=''
+        sortstr = sortstr.replace(' ','')
+        str_list = sortstr.split(';')
+        for x in str_list:
+            str_temp = x[1:len(x)]
+            if str_temp == 'RANK':
+                str_temp = '_sorce'
+                sort_style = ''
+            if x[0]=='+':
+                sort_style = 'asc'
+            elif x[0]=='-':
+                sort_style = 'desc'
+            para +='{"'+str_temp+'":"'+sort_style+'"},'
+        ans = '"sort":['
+        ans +=para[0:len(para)-1]+']'
+        return ans
+
                                       
 
 
 if __name__ == "__main__":
     doit = Doit()
-    doit.deal_api("query=(title:'a' OR title:'b' OR tags:'shose') AND (type:'1' OR hot:'9') ANDNOT title:'c' RANK title:'d'&& filter=((cold+hot>2) AND tags=\"shose\")OR tags=\"shirt\"")
-    temp = doit.get_filter_clause_terms('')
-    print "===result==="
-    ans,k = doit.generate_es_filter_obj(0,temp)
-    print ans
-    print '{  "query": {"filtered": {    "query": {      "match_all": {}    },    "filter": '+json.dumps(ans)+'}}}'
+    doit.deal_api("query=(title:'a' OR title:'b' OR tags:'shose') AND (type:'1' OR hot:'9') ANDNOT title:'c' RANK title:'d'&& filter=((cold+hot>2) AND tags=\"shose\")OR tags=\"shirt\"&&sort=+type;-RANK")
+    #temp = doit.get_filter_clause_terms('')
+    #print "===result==="
+    #ans,k = doit.generate_es_filter_obj(0,temp)
+    ##print ans
+    #print '{  "query": {"filtered": {    "query": {      "match_all": {}    },    "filter": '+json.dumps(ans)+'}}}'
