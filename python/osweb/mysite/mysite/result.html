@@ -32,7 +32,7 @@
         </div>
         <div class="container">
             <div class="row">
-                <div class="col-md-9">
+                <div class="col-md-8">
                     {% autoescape off %}
                     {% for item in all_result %}
                     <hr/>
@@ -55,7 +55,7 @@
                     <p style="word-wrap:break-word">&nbsp;&nbsp;&nbsp;&nbsp;{{ item.content }}</p>
                     {% endfor %}
                     {% endautoescape %}
-                    <br/>
+                    <hr/>
                     <ul class="pagination">
                         {% if prePage > 0  %}
                         <li><a href="../result/?keywords={{ keyword }}&page={{prePage}}">&laquo;</a></li>
@@ -68,7 +68,117 @@
                         {% else %}
                         <li  class="disabled"><a>&raquo;</a></li>
                         {% endif %}
+
+                    </ul>
+                </div>
+                <div class = "col-md-1"></div>
+                <div class="col-md-3">
+                    <div class="accordion" id="accordion2">
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                                    产品简介
+                                </a>
+                            </div>
+                            <div id="collapseOne" class="accordion-body collapse" style="height: 0px; ">
+                                <div class="accordion-inner">
+                                    <ul>
+                                        
+                                        
+                                        <li><a href="#/tun/opensearch/brief-manual/opensearch-summary&amp;brief-summary">系统介绍</a></li>
+                                        <li><a href="#/tun/opensearch/brief-manual/opensearch-summary&amp;advantage">产品优势</a></li>
+                                        <li><a href="#/tun/opensearch/brief-manual/opensearch-summary&amp;usage-scenario">使用场景</a></li>
+                                        <li><a href="#/tun/opensearch/brief-manual/opensearch-summary&amp;principles">基础架构</a></li>
+                                        
+                                        <li><a href="#/tun/opensearch/brief-manual/price">价格总览</a></li>
+                                        
+                                        <li><a href="#/tun/opensearch/brief-manual/service-agreement&amp;serviceability">服务可用性</a></li>
+                                        <li><a href="#/tun/opensearch/brief-manual/service-agreement&amp;term-of-service">服务条款</a></li>
+                                        
+                                        <li><a href="#/tun/opensearch/brief-manual/concepts">相关概念</a></li>
+                                        <li><a href="#/tun/opensearch/brief-manual/system-limits">系统限制</a></li>
+                                        <li><a href="#/tun/opensearch/brief-manual/release-process">发布历程</a></li>
+
+                                    </ul>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+                                    快速开始
+                                </a>
+                            </div>
+                            <div id="collapseTwo" class="accordion-body collapse">
+                                <div class="accordion-inner">
+                                    <ul>
+                                        <li><a href="#/tun/opensearch/quick-start/getting-started">2.1 快速入门</a></li>
+                                        
+                                        
+                                                <li><a href="#/tun/opensearch/quick-start/operation-introduced&amp;create-app">2.2.1.1 创建应用</a></li>
+                                                <li><a href="#/tun/opensearch/quick-start/operation-introduced&amp;quota">2.2.1.2 配额及计费</a></li>
+                                                <li><a href="#/tun/opensearch/quick-start/operation-introduced&amp;relevance">2.2.1.3 搜索相关性配置</a></li>
+                                                <li><a href="#/tun/opensearch/quick-start/operation-introduced&amp;feature-function">相关性函数说明</a></li>
+                                                <li><a href="#/tun/opensearch/quick-start/operation-introduced&amp;summary">2.2.1.4 搜索摘要配置</a></li>
+                                                <li><a href="#/tun/opensearch/quick-start/operation-introduced&amp;qp">2.2.1.5 查询分析</a></li>
+                                                <li><a href="#/tun/opensearch/quick-start/operation-introduced&amp;data-sync-internal">2.2.1.6 数据源</a></li>
+                                                <li><a href="#/tun/opensearch/quick-start/operation-introduced&amp;index-restructure">2.2.1.7 索引重建</a></li>
+                                                <li><a href="#/tun/opensearch/quick-start/operation-introduced&amp;suggest">2.2.1.8 下拉提示</a></li>
+                                     
+                                        
+                                            <li><a href="#/tun/opensearch/quick-start/operation-introduced&amp;search-test">2.2.2 搜索测试</a></li>
+                                        
+                                            <li><a href="#/tun/opensearch/quick-start/operation-introduced&amp;data-statistics">2.2.4 数据统计</a></li>
+                                            <li><a href="#/tun/opensearch/quick-start/operation-introduced&amp;download">2.2.5 下载中心</a></li>
+                                        
+                                        
+                                        </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
+                                    API参考手册
+                                </a>
+                            </div>
+                            <div id="collapseThree" class="accordion-body collapse">
+                                <div class="accordion-inner">
+                                    <ul>
+                                        <li><a href="#/tun/opensearch/api-reference/terminology">3.1 API概览</a></li>
+                                        <li><a href="#/tun/opensearch/api-reference/history">3.2 更新历史</a></li>
+
+                                        <li><a href="#/tun/opensearch/api-reference/call-method&amp;request-structure">3.3.1 请求结构</a></li>
+                                        <li><a href="#/tun/opensearch/api-reference/call-method&amp;common-params">3.3.2 公共参数</a></li>
+                                        <li><a href="#/tun/opensearch/api-reference/call-method&amp;signature">3.3.3 签名机制</a></li>
+                                        
+
+
+                                        <li><a href="#/tun/opensearch/api-reference/api-interface&amp;app-manager">3.4.1 应用管理</a></li>
+                                        <li><a href="#/tun/opensearch/api-reference/api-interface&amp;data-manager">3.4.2 数据处理</a></li>
+                                        <li><a href="#/tun/opensearch/api-reference/api-interface&amp;search-related">3.4.3 搜索</a></li>
+                                        <li><a href="#/tun/opensearch/api-reference/query-clause&amp;query-clause">query子句</a></li>
+                                        <li><a href="#/tun/opensearch/api-reference/query-clause&amp;config-clause">config子句</a></li>
+                                        <li><a href="#/tun/opensearch/api-reference/query-clause&amp;filter-clause">filter子句</a></li>
+                                        <li><a href="#/tun/opensearch/api-reference/query-clause&amp;sort-clause">sort子句</a></li>
+                                        <li><a href="#/tun/opensearch/api-reference/query-clause&amp;aggregate-clause">aggregate子句</a></li>
+                                        <li><a href="#/tun/opensearch/api-reference/query-clause&amp;distinct-clause">distinct子句</a></li>
+                                        <li><a href="#/tun/opensearch/api-reference/query-clause&amp;kvpair-clause">kvpairs子句</a></li>
+                                        <li><a href="#/tun/opensearch/api-reference/api-interface&amp;suggest">3.4.4 下拉提示</a></li>
+                                        <li><a href="#/tun/opensearch/api-reference/api-interface&amp;index-restructure">3.4.5 索引重建</a></li>
+                                        <li><a href="#/tun/opensearch/api-reference/api-interface&amp;quota-manager">3.4.6 配额管理</a></li>
+                                        <li><a href="#/tun/opensearch/api-reference/api-interface&amp;errormsg">3.4.7 错误日志</a></li>
+
+                                        <li><a href="#/tun/opensearch/api-reference/call-method&amp;errormsg">3.5 错误码说明</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                         
+                        
+                        
+                    </div>
                 </div>
             </div>
 

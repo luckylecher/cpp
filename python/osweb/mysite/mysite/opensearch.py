@@ -8,7 +8,7 @@ class OpenSearch:
     def __init__(self):
         self.ak = "M2plnqGUH5lC4UWQ"
         self.secret = "CUJSetgXfjdEzP2tE9ZRN74BvS2Te0"
-        self.appName = "OpensearchHelpDoc"
+        self.appName = "HDoc_V2"
         self.suggestName = "all"
         self.host = "opensearch-cn-corp.aliyuncs.com"
         self.param = {}
@@ -40,16 +40,18 @@ class OpenSearch:
         self.param['query'] = "query=content:'"+keyword+"'&&config=start:"+str(start)+",hit:"+str(hit)
 
     def encode(self, str):
-        return quote(str).replace("%7E", "~")
+        return quote(str).replace("%7E", "~").replace("/","%2F")
     
     def generateURL(self):
         raw_url = ""
         for item in self.order:
             raw_url += item[0] + "=" + self.encode(self.param[item[0]]) + "&"
+        print raw_url
         raw_url = raw_url[:len(raw_url) - 1]
         signature = self.encode(self.caculateHMAC(raw_url))
         raw_url = "http://" + self.host + "/search?"+raw_url+"&Signature="+signature.replace("/","%2F")
         #return "/search?"+raw_url+"&Signature="+signature.replace("/","%2F")
+        print raw_url
         return raw_url
 
     def caculateHMAC(self, str):
@@ -73,6 +75,7 @@ class OpenSearch:
 
     def getSearchResult(self, key, start, hit):
         #key = urllib.unquote(str(key)).decode('utf8')
+        print key
         self.generateQueryParam(key, start, hit)
         url =  self.generateURL()
         response = urllib2.urlopen(url)
@@ -80,10 +83,12 @@ class OpenSearch:
         res_obj = json.loads(html)
         if res_obj['status'] != "OK":
             print "search result not ok!"
+            print res_obj
             return None
         else:
+            print res_obj['tracer']
             return res_obj['result']
-    
+
     def test(self):
         self.generateQueryParam("Hello")
         url =  self.generateURL()

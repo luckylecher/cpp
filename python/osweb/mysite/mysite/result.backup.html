@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="icon" href="//www.aliyun.com/favicon.ico" />
+        <title>{{keyword}}</title>
+        <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+        <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+        <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <style>strong{
+            color: #f00111;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div style = "margin-top:50px"><em>OpenSearch文档检索工具</em></div>
+            <div class="row" >
+                <div class="col-md-6">
+                    <form action='../result' enctype='application/x-www-form-urlencoded' style="width:370px">
+                        <input name='keywords' type="text" class="input-medium search-query" style="width:300px;height:30px" value="{{keyword}}"></input>
+                        <button type='submit' class="btn btn-primary" >搜索</button>
+                    </form>
+                </div>
+                <div class="col-md-3"></div>
+                <div class="col-md-3"></div>
+            </div>
+            <span>共有 {{total}} 条结果，耗时{{searchtime}}秒。</span>
+            <a href="../index">返回</a>
+          
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    {% autoescape off %}
+                    {% for item in all_result %}
+                    <hr/>
+                    {% if item.id < 2000 %}
+                    <span>文档首页</span> > <span>产品简介</span> > 
+                    {% endif %}
+                    {% if item.id > 1999 and item.id < 3000 %} 
+                    <span>文档首页</span> > <span>快速开始</span> > 
+                    {% endif %}
+                    {% if item.id > 2999 and item.id < 4000 %}
+                    <span>文档首页</span> > <span>API参考手册</span> > 
+                    {% endif %}
+                    {% if item.id > 3999 and item.id < 5000 %}
+                    <span>文档首页</span> > <span>SDK参考手册</span> > 
+                    {% endif %}
+                    {% if item.id > 4999 and item.id < 6000 %}
+                    <span>文档首页</span> > <span>最佳实践</span> > 
+                    {% endif %}
+                    <a href="{{ item.link }}" target="_blank">{{ item.title }}</a>
+                    <p style="word-wrap:break-word">&nbsp;&nbsp;&nbsp;&nbsp;{{ item.content }}</p>
+                    {% endfor %}
+                    {% endautoescape %}
+                    <hr/>
+                    <ul class="pagination">
+                        {% if prePage > 0  %}
+                        <li><a href="../result/?keywords={{ keyword }}&page={{prePage}}">&laquo;</a></li>
+                        {% else %}
+                        <li class="disabled"><a>&laquo;</a></li>
+                        {% endif %}
+                        <li class="active"><a>{{page}}</a></li>
+                        {% if nextPage > 0  %}
+                        <li><a href="../result/?keywords={{ keyword }}&page={{nextPage}}">&raquo;</a></li>
+                        {% else %}
+                        <li  class="disabled"><a>&raquo;</a></li>
+                        {% endif %}
+
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        
+</body>
+</html>

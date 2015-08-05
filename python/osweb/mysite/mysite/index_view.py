@@ -1,7 +1,7 @@
 #encoding:utf-8
 from django.http import HttpResponse
 from django import template
-from opensearch import OpenSearch
+from searchapi import SearchAPI
 import urllib
 import helper
 
@@ -11,14 +11,14 @@ def hello(request):
 
 def search(request):
         hit = 15 #每页结果数
-        os = OpenSearch()
+        os = SearchAPI()
         kw = request.GET.get('keywords').encode('utf-8')
         if kw == "":
                 return HttpResponse("关键字不能为空!<a href=\"../index\">返回</a>")
         page = helper.get_page( request.GET.get('page') )
         start = (page - 1) * hit
         helper.save_search_log(kw, page)
-        res = os.getSearchResult(kw, start, hit)
+        res = os.search(kw, start, hit)
         if res is None:
                 return HttpResponse("内部错误,请联系 砺诚")
         num = res['num']
@@ -41,5 +41,6 @@ def search(request):
                 "prePage":prePage
                 })
         return HttpResponse(t.render(c))
+
 def my_custom_error_view(request):
-        return HttpResponse("<H1>错误!</H1>")
+        return HttpResponse("<H1>错误了!</H1>")
