@@ -22,10 +22,12 @@ class FormatDoc:
                docContent=""
             elif line.startswith("link="):
                 docUrl = line[5:-1].replace("^_","")
+
                 print docUrl
                 ff.write(self.deal_a_doc(docContent,docUrl, docTitle))
-            elif line.startswith("title="):
-                docTitle = line[6:-1].replace("^_","")
+                docTitle = ""
+            elif line.startswith("doc_title="):
+                docTitle = line[10:-1].replace("^_","")
             else:
                 docContent += line
         print "total:%d" % self.counter
@@ -33,6 +35,8 @@ class FormatDoc:
         ff.close()
 
     def deal_a_doc(self, doc, url, title):
+        if title == "":
+            title = u"待补充"
         self.counter += 1
         url_parts = url.split("/")
         if len(url_parts) < 8:
@@ -40,7 +44,7 @@ class FormatDoc:
             return None
         last_part = url_parts[7]
         main_id = self.category[url_parts[6]] * 1000 + self.counter
-        return "id=%d\ntitle=%s\ncontent=%s\nlink=%s\n" % (main_id, title, doc,url)
+        return "doc_id=%d\ndoc_title=%s\ndoc_content=%s\ndoc_link=%s\n" % (main_id, title, doc,url)
 
 if "__main__" == __name__:
     FormatDoc().deal()

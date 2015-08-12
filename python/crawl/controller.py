@@ -29,7 +29,7 @@ class DataUpdateController:
 
     def startSystem(self):
         #self.beginCrawlData()
-        #self.convertData()
+        self.convertData()
         self.formatContent()
         self.uploadToOpensearch()
 

@@ -10,7 +10,7 @@ class HtmlTagRemover:
         str = ""
         html_escaper = HTMLParser.HTMLParser()
         for line in f:
-            temp = self.replace_all(line.replace("<h1","\ntitle=<h1"))
+            temp = self.replace_all(line.replace("id=\"menu0\">","id=\"menu0\">\ndoc_title="))
             str += html_escaper.unescape(temp)
         f.close()
         f = codecs.open(dest_file, "w", encoding="utf-8", errors="ignore")

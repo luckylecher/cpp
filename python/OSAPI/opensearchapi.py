@@ -12,6 +12,10 @@ class OpenSearchAPI:
         self.host = "opensearch-cn-corp.aliyuncs.com"
         self.method = "GET"
         self.param = {}
+        self.appName = ""
+
+    def setAppName(self, name):
+        self.appName = name
 
     def setAccessKeyAndSecret(self, ak, sc):
         self.ak = ak
@@ -29,25 +33,31 @@ class OpenSearchAPI:
 
     def setParam(self, param):
         self.param = param
-        self.param['SignatureNonce'] = self.getSignatureNonce()
-        self.param['Timestamp'] = self.getUTC()
+        self.param['SignatureNonce'] = ""
+        self.param['Timestamp'] = ""
         self.param['AccessKeyId'] = self.ak
         self.param['SignatureMethod'] = "HMAC-SHA1"
         self.param['SignatureVersion'] = "1.0"
         self.param['Version'] = "v2"
+        self._sortParam()
+
+    def _sortParam(self):
         self.order = sorted(self.param.iteritems(), key=lambda d:d[0])
+
+    def addParam(self, key, value):
+        self.param[key] = value
+        self._sortParam()
 
     def encode(self, str):
         return quote(str).replace("%7E", "~").replace("/","%2F")
 
-    def signature(self, trace = False):
+    def signature(self):
+        self.param['SignatureNonce'] = self.getSignatureNonce()
+        self.param['Timestamp'] = self.getUTC()
         raw_url = ""
         for item in self.order:
             raw_url += item[0] + "=" + self.encode(self.param[item[0]]) + "&"
-        if trace:
-            raw_url += "trace=ALL"
-        else:
-            raw_url = raw_url[:len(raw_url) - 1]
+        raw_url = raw_url[:len(raw_url) - 1]
         signature = self.encode(self.caculateHMAC(raw_url))
         return raw_url, signature
 

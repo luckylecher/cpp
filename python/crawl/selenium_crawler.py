@@ -6,11 +6,11 @@ import time
 import codecs
 class SCrawler:
     def __init__(self):
-        self.start = "https://docs.aliyun.com/#/pub/opensearch/menu/menu"
+        self.start = "https://docs.aliyun.com/#/tun/opensearch/menu/menu-internal"
         self.domain = "https://docs.aliyun.com/"
         self.urls = []
         self.ff = None
-        self.url_ptn = re.compile(r'href="(#/pub/opensearch/.*?)"')
+        self.url_ptn = re.compile(r'href="(#/tun/opensearch/.*?)"')
         self.file = "html.txt"
 
     def get_all_url(self):
@@ -18,6 +18,7 @@ class SCrawler:
         driver.get(self.start)
         ele = driver.find_element_by_css_selector("#doc-api-1218 > div > div > div > div.doc-span10.help-content")
         html = ele.get_attribute("innerHTML")
+        print html
         hrefs = re.findall(self.url_ptn, html)
         print len(hrefs)
         for item in hrefs:

@@ -9,7 +9,7 @@ class OpenSearch:
     def __init__(self):
         self.ak = "M2plnqGUH5lC4UWQ"
         self.secret = "CUJSetgXfjdEzP2tE9ZRN74BvS2Te0"
-        self.appName = "HDoc_V2" #"HDoc"
+        self.appName = "HDoc_V5" #"HDoc"
         self.suggestName = "all"
         self.host = "opensearch-cn-corp.aliyuncs.com"
         self.param = {}
@@ -41,13 +41,14 @@ class OpenSearch:
         cmd =  '''curl -POST 'http://%s%s' -d '%s' ''' % (self.host, url, doc)
         #print cmd
         cmd_status, http_result = commands.getstatusoutput(cmd)
-        #print cmd_status, http_result
+        upload_result = False
         if http_result.find('"status":"OK"') > 0:
-            pass #print "Success!"
+            upload_result = True
         else:
+            print doc
             print "Failed:%s" % http_result
         time.sleep(0.3)
-        return cmd
+        return upload_result
 
     def generateUploadParam(self):
         param = {
