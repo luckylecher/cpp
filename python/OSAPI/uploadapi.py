@@ -4,11 +4,12 @@ import urllib,urllib2
 import commands
 from opensearchapi import OpenSearchAPI
 class UploadAPI(OpenSearchAPI):
-    def __init__(self):
+    def __init__(self, ak = None, secret = None, host = None):
         OpenSearchAPI.__init__(self)
-        self.setAccessKeyAndSecret("M2plnqGUH5lC4UWQ","CUJSetgXfjdEzP2tE9ZRN74BvS2Te0")
-        self.appName = "test" 
-        self.setHost("opensearch-cn-corp.aliyuncs.com")
+        if ak is None or secret is None:
+            self.setAccessKeyAndSecret("M2plnqGUH5lC4UWQ","CUJSetgXfjdEzP2tE9ZRN74BvS2Te0")
+        if host is None or host == "":
+            self.setHost("opensearch-cn-corp.aliyuncs.com")
         self.table_name = "main"
         self.setParam({
             "action" : "push",
