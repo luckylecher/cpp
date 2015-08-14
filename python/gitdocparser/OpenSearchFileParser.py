@@ -37,14 +37,14 @@ class OpenSearchFileParser:
             return False
         if out.startswith("Already up-to-date."):
             print out
-            return False
+            #return False
         return True
 
     def startUp(self):
         if not self.getUpdateFromGitLabServer():
             return
         indexObj = self.processIndexFile(os.path.join(self.docDir, self.indexFileName))
-        self.generateIndexDict("", "", indexObj)
+        self.generateIndexDict("", "", "", indexObj)
         self.processFileList()
         self.readFileInFinalList()
 
@@ -54,20 +54,31 @@ class OpenSearchFileParser:
         self.docDir = os.path.join(self.gitDir, "doc")
 
     #给每一项增加一个raw_url,保存其路径
-    def generateIndexDict(self, path_prefix, url_prefix, indexObj):
+    def generateIndexDict(self, path_prefix, url_prefix, title_prefix, indexObj):
         for item in indexObj:
             item['raw_url'] = url_prefix + "/" + item['name_en']
+            if title_prefix != "":
+                item['navigation'] = title_prefix + " > " + item['name_cn']
+            else:
+                item['navigation'] = item['name_cn']
             self.flist[path_prefix + item['key']] = item
+
+    def cutNavigationLastSegment(self, naviStr):
+        if naviStr.find('>') < 0:
+            return naviStr
+        else:
+            return naviStr[:naviStr.rfind('>')]
 
     #处理flist中的每一个元素,生成finalList表
     def processFileList(self):
         while len(self.flist) > 0:
             last = self.flist.popitem()
             if not last[1]['isFolder']:
+                last[1]['navigation'] = self.cutNavigationLastSegment(last[1]['navigation'])
                 self.finalList.append((last[0],last[1]))
                 continue
             indexObj = self.processIndexFile(os.path.join(self.docDir, last[0] + "/" + self.indexFileName))
-            self.generateIndexDict(last[0] + "/", last[1]['raw_url'], indexObj)
+            self.generateIndexDict(last[0] + "/", last[1]['raw_url'], last[1]['navigation'], indexObj)
 
     #格式化index.json中的内容成对象
     def processIndexFile(self, path):
@@ -99,7 +110,9 @@ class OpenSearchFileParser:
                 if line.startswith(u"# ") or line.startswith(u"## ") or line.startswith(u"### "):
                     docInfo['abstract'] += line.replace("#","").replace("\r\n", " ").replace("\n", " ")
                 docInfo['content'] += self.formatLineContent(line)
-            docInfo["title"] = item[1]['name_cn']
+            if docInfo['title'] == "":
+                docInfo["title"] = item[1]['name_cn']
+            docInfo['navigation'] = item[1]['navigation']
             if DEBUG:
                 print docInfo['content']
             docInfo['link_suffix'] = self.convert2URLSuffix(item[1]['raw_url'])

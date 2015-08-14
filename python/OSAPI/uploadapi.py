@@ -23,7 +23,6 @@ class UploadAPI(OpenSearchAPI):
 
     def uploadDoc(self, doc, id = "Unknown"):
         doc = "[%s]" % doc
-        print doc
         body = urllib.urlencode({"items":doc.encode("utf-8")})
         status_ok = self._sendRequest(body, id)
         time.sleep(0.3)

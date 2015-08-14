@@ -1,5 +1,5 @@
 {
-  "app_name":"HDoc_V7",
+  "app_name":"HDoc_V8",
   "app_host":"opensearch-cn-corp.aliyuncs.com",
   "access_key":null,
   "secret":null,
@@ -9,11 +9,10 @@
   "url_prefix":"https://docs.aliyun.com/#/pub/opensearch/",
   "index_file_name":"index.json",
   "navigate_code":{
-            "brief-manual":1,
-            "quick-start":2,
-            "api-reference":3,
-            "sdk":4,
-            "best-practice":5,
-            "menu":6
+            "brief-manual":6,
+            "quick-start":6,
+            "api-reference":6,
+            "sdk":6,
+            "best-practice":6
         }
 }

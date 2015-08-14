@@ -22,8 +22,7 @@ class OpenSearchDocUploader:
                 "quick-start":2,
                 "api-reference":3,
                 "sdk":4,
-                "best-practice":5,
-                "menu":6
+                "best-practice":5
             }
         else:
             self.category = navigateMap
@@ -36,13 +35,22 @@ class OpenSearchDocUploader:
         self.category = dict
 
     def getID(self, link):
-        self.count += 1
         if DEBUG:
             return self.count
-        return self.category[re.compile(r"(.*?)/").findall(link)[0]] * 1000 + self.count
+        try:
+            cat_key = re.compile(r"(.*?)/").findall(link)[0]
+        except Exception,e:
+            return -1
+        if cat_key not in self.category:
+            return -1
+        self.count += 1
+        return self.category[cat_key] * 1000 + self.count
 
     def uploadDoc(self, docObj):
         id = self.getID(docObj['link_suffix'])
+        if id < 0:
+            print "doc not in config, jump!"
+            return
         link_hash = self._getHash(docObj['link_suffix'])
         content_hash = self._getHash(docObj['content'])
         if self.log_obj.has_key(link_hash) and content_hash == self.log_obj[link_hash]:
@@ -56,8 +64,6 @@ class OpenSearchDocUploader:
             res = self.uploader.uploadDoc(temp, id)
             if res:
                 self.log_obj[link_hash] = content_hash
-            else:
-                print temp
         self._updateLog()
 
     def _getHash(self, str):
