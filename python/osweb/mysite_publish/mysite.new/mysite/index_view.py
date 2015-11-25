@@ -27,7 +27,7 @@ def search(request):
         page = helper.get_page( request.GET.get('page') )
         start = (page - 1) * hit
         helper.save_search_log(kw, page)
-        res = searcher.search(kw, start, hit, WEB_TAG)
+        res = searcher.search(kw.replace("'",""), start, hit, WEB_TAG)
         if res is None:
                 return HttpResponse("内部错误,请联系 砺诚")
         num = res['num']

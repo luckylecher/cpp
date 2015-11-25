@@ -1,19 +1,23 @@
 #coding:utf-8
-import os
+import os,sys,logging
 import codecs,re,HTMLParser,time
 import json
 from DocUploader import OpenSearchDocUploader
 import commands
+from logger import Logger
 DEBUG = False
 class OpenSearchFileParser:
-    def __init__(self):
+    def __init__(self, config_file):
+        self.config_file = config_file
         self.flist = {}
         self.finalList = []
         self.initConfig()
-        self.uploader = OpenSearchDocUploader(self.appName, self.ak, self.secret, self.appHost, self.naviMap)
+        self.logger = Logger()
+        self.uploader = OpenSearchDocUploader(self.appName, self.ak, self.secret, self.appHost, self.logger, self.naviMap)
+        
         
     def initConfig(self):
-        configObj = json.load(open("config.json"))
+        configObj = json.load(open(self.config_file))
         self.appName = configObj['app_name']
         self.gitDir = configObj['git_dir']
         self.docDir = os.path.join(self.gitDir, "doc")
@@ -29,15 +33,16 @@ class OpenSearchFileParser:
         self.indexFileName = configObj['index_file_name']
 
     def getUpdateFromGitLabServer(self):
-        cmd = "cd %s & git pull" % self.gitDir
-        print cmd
+        cmd = "cd %s && git pull" % self.gitDir
+        self.logger.info(cmd)
         st, out = commands.getstatusoutput(cmd)
+        self.logger.info( "git status: " + out )
         if st != 0:
-            print "command execute failed!"
+            self.logger.error( "Command execute failed, program exit!" )
             return False
         if out.startswith("Already up-to-date."):
-            print out
-            #return False
+            self.logger.info( "Git doc content not change, program exit!" )
+            return False
         return True
 
     def startUp(self):
@@ -150,5 +155,6 @@ class OpenSearchFileParser:
         return line
 
 if __name__ == "__main__":
-    ofp = OpenSearchFileParser()
+    #1个参数:配置文件所在路径
+    ofp = OpenSearchFileParser(sys.argv[1])
     ofp.startUp()

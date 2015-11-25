@@ -1,13 +1,14 @@
 {
   "app_name":"HDoc_V8",
   "app_host":"opensearch-cn-corp.aliyuncs.com",
-  "access_key":null,
-  "secret":null,
-  "git_dir":"/Users/licheng/Documents/git/opensearch",
+  "access_key":"GzYQyKqMQR735ppe",
+  "secret":"JzSoZ7KJ3JT4CBjzXfe5K7FEy7o3cx",
+  "git_dir":"/home/lecher.lc/lc/osHelperWeb/OpenSearchDoc/opensearch",
   "outer_tag":"pub",
   "inner_tag":"tun",
   "url_prefix":"https://docs.aliyun.com/#/pub/opensearch/",
   "index_file_name":"index.json",
+  "log_dir":"/home/lecher.lc/lc/osHelperWeb/gitdocparser",
   "navigate_code":{
             "brief-manual":6,
             "quick-start":6,

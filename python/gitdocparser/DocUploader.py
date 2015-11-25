@@ -11,11 +11,12 @@ sys.path.append("/Users/licheng/Documents/git/cpp/python/OSAPI/")
 import uploadapi
 DEBUG = False
 class OpenSearchDocUploader:
-    def __init__(self, appName, ak, secret, host, navigateMap = None):
+    def __init__(self, appName, ak, secret, host, logger, navigateMap = None):
         self.fpath = ""
         self.outpath = ""
         self.log_file = "upload_logs.txt"
         self.log_obj = None
+        self.logger = logger
         if navigateMap is None:
             self.category = {
                 "brief-manual":1,
@@ -49,12 +50,12 @@ class OpenSearchDocUploader:
     def uploadDoc(self, docObj):
         id = self.getID(docObj['link_suffix'])
         if id < 0:
-            print "doc not in config, jump!"
+            self.logger.info( "doc not in config, jump!" )
             return
         link_hash = self._getHash(docObj['link_suffix'])
         content_hash = self._getHash(docObj['content'])
         if self.log_obj.has_key(link_hash) and content_hash == self.log_obj[link_hash]:
-            print "%s doc not change, not upload!" % id
+            self.logger.info( "%s doc not change, not upload!" % id )
         else:
             docObj['md5'] = link_hash
             docObj['id'] = str(id)
@@ -78,7 +79,7 @@ class OpenSearchDocUploader:
             self.log_obj = json.load(f)
         except Exception,e:
             #self.log_obj = {}
-            print "Log file dose not exist, create it!"
+            self.logger.info( "Log file dose not exist, create it!" )
             open(self.log_file, "w").write("{}")
         finally:
             if self.log_obj is None:

@@ -16,7 +16,6 @@ class SuggestAPI(OpenSearchAPI):
         self.param['suggest_name'] = self.suggestName
         req, sign = self.signature()
         url = "http://%s/suggest?%s&Signature=%s" % (self.host, req, sign)
-        print url
         return self._formatResult(self.request(url))
 
     def _formatResult(self, result_str):
@@ -25,7 +24,6 @@ class SuggestAPI(OpenSearchAPI):
         result_obj = None
         try:
             result_obj = json.loads(result_str)
-            print result_obj
         except Exception,e:
             print "Convert into json failed!"
             return None
