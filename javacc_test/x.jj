@@ -1,0 +1,32 @@
+/*adder.jj 吧一堆数字相加*/
+
+options{
+
+STATIC = false;
+
+}
+
+SKIP:{“ “}
+
+SKIP:{“\n”|”\r”|”\r\n”}
+
+TOKEN:{< PLUS : “+”>}
+
+TOKEN:{< NUMBER : ([“0”-“9”])+ >}
+
+
+PARSER_BEGIN(Adder)
+
+public class Adder{
+
+public static void main(String[] args) throws ParseException, TokenMgrError{//作者这里没有加public,这会在某些情况下产生错误（译注）
+
+        Adder parser = new Adder(System.in);
+
+        parser.Start();//方法名竟然是大写开头的，真不地道（翻译吐槽）
+
+}
+
+}
+
+PARSER_END(Adder)
